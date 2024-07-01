@@ -6,7 +6,7 @@ import requests
 
 @main.route('/')
 def index():
-    return 'Hello, Wold!'
+    return 'Navigate to the hello route!'
 
 @main.route('/hello')
 def greeting():
@@ -20,20 +20,22 @@ def greeting():
     greeting_intro = f'Hello, {display_name}!' if display_name != "" else "Hello!"
 
     # get user ip
-    ip_url = 'https://api.ipify.org?format=json'
-    ip_response = requests.get(ip_url)
-    if ip_response.status_code != 200:
-        return 'User IP not found.'
+    # ip_url = 'https://api.ipify.org?format=json'
+    # ip_response = requests.get(ip_url)
+    # if ip_response.status_code != 200:
+    #     return 'User IP not found.'
     
-    ip_result = ip_response.json()
+    # ip_result = ip_response.json()
+
+    ip_result = request.remote_addr
 
     # get location and temperature
-    weather_url = f"http://api.weatherapi.com/v1/current.json?key={environ.get('API_KEY')}&q={ip_result.get('ip')}"
+    weather_url = f"http://api.weatherapi.com/v1/current.json?key={environ.get('API_KEY')}&q={ip_result}"
 
     location_response = requests.get(weather_url)
     if location_response.status_code != 200:
         return jsonify({
-        'client_ip': ip_result.get('ip'),
+        'client_ip': ip_result,
         'location': 'Location not found.',
         'greeting': greeting_intro
     })
@@ -46,7 +48,7 @@ def greeting():
     temp_c =  current.get('temp_c', 'Temperature not found.')
 
     return jsonify({
-        'client_ip': ip_result.get('ip'),
+        'client_ip': ip_result,
         'location': region,
         'greeting': f'{greeting_intro}, the temperature is {temp_c} degrees Celsius in {region}'
     })

@@ -11,7 +11,7 @@ app = create_app()
 
 @app.route('/')
 def home():
-    return 'Hello, World!'
+    return 'HNG11 Backend Track Stage 1!'
 
 if __name__ == '__main__':
     # app.run(debug=True, port=3000)
