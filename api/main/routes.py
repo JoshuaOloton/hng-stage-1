@@ -18,7 +18,12 @@ def greeting():
 
     greeting_intro = f'Hello, {display_name}!' if display_name != "" else "Hello Guest!"
 
-    ip_result = ip.get()
+    if request.headers.getlist("X-Forwarded-For"):
+        ip_result = request.headers.getlist("X-Forwarded-For")[0].split(',')[0].strip()
+    else:
+        ip_result = request.remote_addr
+
+    # ip_result = ip.get()
 
     # get location and temperature
     weather_url = f"http://api.weatherapi.com/v1/current.json?key={environ.get('API_KEY')}&q={ip_result}"
