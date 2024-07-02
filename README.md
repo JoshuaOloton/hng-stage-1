@@ -77,6 +77,6 @@ When you visit the /hello endpoint, you will get a JSON response like this:
 ```
 
 
-## Live URL: https://hng-stage-1-weld.vercel.app/api/
+### Live URL: https://hng-stage-1-weld.vercel.app/api/
 
 
