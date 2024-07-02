@@ -3,6 +3,7 @@ from flask import jsonify, request
 from os import environ
 import re
 import requests
+import public_ip as ip
 
 @main.route('/')
 def index():
@@ -32,9 +33,14 @@ def greeting():
     # else:
     #     ip_result = request.remote_addr
 
-    print('ip')
-    print(request.access_route)
-    ip_result = request.access_route[0]
+    # print('ip')
+    # print(request.access_route)
+    # print(request.headers.getlist("X-Forwarded-For"))
+    # ip_result = request.access_route[0]
+
+    print('Public IP: ', ip.get())
+
+    ip_result = ip.get()
 
     # get location and temperature
     weather_url = f"http://api.weatherapi.com/v1/current.json?key={environ.get('API_KEY')}&q={ip_result}"

@@ -1,9 +1,7 @@
 from flask import Flask
 from config import config
-from dotenv import load_dotenv
 
 def create_app(config_name='default'):
-    load_dotenv()
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])

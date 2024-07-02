@@ -2,11 +2,13 @@ from api import create_app
 from waitress import serve
 from paste.translogger import TransLogger
 import logging
+from dotenv import load_dotenv
 
 
 logger = logging.getLogger('waitress')
 logger.setLevel(logging.INFO)
 
+load_dotenv()
 app = create_app()
 
 @app.route('/')
