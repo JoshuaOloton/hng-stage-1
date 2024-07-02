@@ -1,7 +1,6 @@
 from . import main
 from flask import jsonify, request
 from os import environ
-import public_ip as ip
 import requests
 
 @main.route('/')
@@ -14,16 +13,15 @@ def greeting():
     if name is None or name == "":
         display_name = ""
     else:
-        display_name = name.strip("'\"")
+        display_name = name.strip("'\"") # remove quotes from name
 
     greeting_intro = f'Hello, {display_name}!' if display_name != "" else "Hello Guest!"
 
+    # get client ip address
     if request.headers.getlist("X-Forwarded-For"):
         ip_result = request.headers.getlist("X-Forwarded-For")[0].split(',')[0].strip()
     else:
         ip_result = request.remote_addr
-
-    # ip_result = ip.get()
 
     # get location and temperature
     weather_url = f"http://api.weatherapi.com/v1/current.json?key={environ.get('API_KEY')}&q={ip_result}"
