@@ -1,9 +1,8 @@
 from . import main
 from flask import jsonify, request
 from os import environ
-import re
-import requests
 import public_ip as ip
+import requests
 
 @main.route('/')
 def index():
@@ -15,30 +14,9 @@ def greeting():
     if name is None or name == "":
         display_name = ""
     else:
-        match = re.match("^['|\"]?([a-zA-Z0-9]+)['|\"]?$", name) #obtain name inside quotes
-        display_name = match.group(1)
+        display_name = name.strip("'\"")
 
-    greeting_intro = f'Hello, {display_name}!' if display_name != "" else "Hello!"
-
-    # get user ip
-    # ip_url = 'https://api.ipify.org?format=json'
-    # ip_response = requests.get(ip_url)
-    # if ip_response.status_code != 200:
-    #     return 'User IP not found.'
-    
-    # ip_result = ip_response.json()
-
-    # if request.headers.getlist("X-Forwarded-For"):
-    #     ip_result = request.headers.getlist("X-Forwarded-For")[0]
-    # else:
-    #     ip_result = request.remote_addr
-
-    # print('ip')
-    # print(request.access_route)
-    # print(request.headers.getlist("X-Forwarded-For"))
-    # ip_result = request.access_route[0]
-
-    print('Public IP: ', ip.get())
+    greeting_intro = f'Hello, {display_name}!' if display_name != "" else "Hello Guest!"
 
     ip_result = ip.get()
 
@@ -53,6 +31,7 @@ def greeting():
         'greeting': greeting_intro
     })
     
+    # parse location json
     location_result = location_response.json()
     location = location_result.get('location', {})
     region = location.get('region', 'Region not found.')
